@@ -3,8 +3,6 @@ from record import Record
 from prettytable import PrettyTable
 
 
-
-
 class AddressBook(UserDict):
     def __init__(self):
         super().__init__()
@@ -21,7 +19,12 @@ class AddressBook(UserDict):
             del self.data[name]
 
     def __str__(self):
-        result = ''
-        result += f'AddressBook with {len(self.data)} records \n'
+        table = PrettyTable()
+        table.align = 'l'
+        table.field_names = ["#", "Name", "Phones"]
 
-        return result
+        for index, record in enumerate(self.data.values(), start=1):
+            phones = ", ".join(phone.value for phone in record.phones)
+            table.add_row([index, record.name.value, phones])
+
+        return table.get_string()
